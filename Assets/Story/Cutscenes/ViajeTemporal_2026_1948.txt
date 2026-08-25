@@ -1,147 +1,183 @@
 ==================================================
 EL BOGOTAZO
-CINEMÁTICA: VIAJE TEMPORAL
+CINEMÁTICA — VIAJE TEMPORAL
 ==================================================
 
+NOMBRE:
+El salto
+
 ESCENA DE ORIGEN:
-Bogotá - 2026
+Bogotá — 2026
 
 ESCENA DE DESTINO:
-Bogotá - 9 de abril de 1948
+Bogotá — 9 de abril de 1948
 
 ACTIVADOR:
-Pulsador del dispositivo temporal.
+El jugador pulsa el botón del dispositivo temporal.
 
 DURACIÓN ESTIMADA:
 25-30 segundos.
 
+OBJETIVO:
+Mostrar visual y sonoramente el viaje temporal del
+protagonista desde 2026 hasta el 9 de abril de 1948.
+
 
 ==================================================
-00:00 - 00:03
-ACTIVACIÓN
+FASE 1 — ACTIVACIÓN
+00:00 - 00:04
 ==================================================
 
-El protagonista pulsa el dispositivo.
+ACCIÓN:
 
-El dispositivo comienza a emitir una luz.
+El protagonista pulsa el botón del dispositivo.
 
-SONIDO:
-- Pequeño sonido eléctrico.
-- Zumbido progresivo.
+El dispositivo permanece unos segundos en silencio.
+
+Después comienza a emitir una pequeña luz.
+
+EFECTOS:
+
+- Luz progresiva.
+- Pequeñas partículas.
+- Zumbido eléctrico.
 
 CÁMARA:
+
 Plano medio del protagonista y el dispositivo.
 
+DIÁLOGO:
+
+PROTAGONISTA:
+
+"¿Qué está pasando?"
+
 
 ==================================================
-00:03 - 00:07
-ANOMALÍA
+FASE 2 — INESTABILIDAD
+00:04 - 00:08
 ==================================================
+
+ACCIÓN:
 
 Las luces del entorno comienzan a parpadear.
 
 El dispositivo aumenta su intensidad.
 
-El protagonista observa preocupado.
+Algunos objetos cercanos comienzan a vibrar
+ligeramente.
 
-DIÁLOGO:
+SONIDO:
 
-PROTAGONISTA:
-"¿Qué está pasando?"
+- Zumbido eléctrico.
+- Interferencia.
+- Golpes leves.
+
+CÁMARA:
+
+Ligera vibración.
 
 
 ==================================================
-00:07 - 00:12
-DISTORSIÓN
+FASE 3 — DISTORSIÓN TEMPORAL
+00:08 - 00:13
 ==================================================
 
-El entorno comienza a distorsionarse.
+ACCIÓN:
+
+El espacio alrededor del protagonista comienza
+a distorsionarse.
 
 La imagen presenta pequeñas interferencias.
 
-Los objetos parecen moverse ligeramente.
-
-SONIDO:
-- Interferencia.
-- Zumbido.
-- Distorsión de audio.
-
-CÁMARA:
-Pequeña vibración.
-
-
-==================================================
-00:12 - 00:16
-CAMBIO TEMPORAL
-==================================================
-
-El sonido de 2026 comienza a desaparecer.
-
-Se incorporan progresivamente sonidos de época:
-
-- Tranvía.
-- Campanas.
-- Multitud.
-- Radio antigua.
+El entorno parece deformarse.
 
 El protagonista intenta alejarse del dispositivo.
 
 DIÁLOGO:
 
 PROTAGONISTA:
+
 "¡No!"
 
+EFECTOS:
 
-==================================================
-00:16 - 00:20
-TRANSICIÓN
-==================================================
-
-La imagen comienza a perder luminosidad.
-
-La pantalla pasa progresivamente a negro.
-
-Los sonidos continúan.
+- Distorsión de imagen.
+- Partículas.
+- Interferencia visual.
+- Vibración de cámara.
 
 
 ==================================================
-00:20 - 00:25
-LLEGADA AL PASADO
+FASE 4 — TRANSICIÓN
+00:13 - 00:18
 ==================================================
 
-Se escucha una transmisión de radio antigua.
+ACCIÓN:
+
+Los sonidos del año 2026 comienzan a desaparecer.
+
+Los sonidos modernos son reemplazados progresivamente
+por sonidos relacionados con Bogotá de los años 40.
+
+SONIDOS:
+
+- Tranvía.
+- Campanas.
+- Multitud.
+- Motores antiguos.
+- Radio.
+
+
+==================================================
+FASE 5 — OSCURIDAD
+00:18 - 00:21
+==================================================
+
+ACCIÓN:
+
+La imagen se vuelve completamente negra.
+
+El sonido eléctrico desaparece.
+
+Durante un instante hay silencio.
+
+
+==================================================
+FASE 6 — EL PASADO
+00:21 - 00:26
+==================================================
+
+ACCIÓN:
+
+Comienza a escucharse una transmisión de radio antigua.
 
 RADIO:
 
 "Bogotá se encuentra en estado de conmoción..."
 
-Se escuchan personas corriendo y gritando.
+Se escuchan personas corriendo.
 
-El sonido de un tranvía aumenta.
+Aumenta progresivamente el ruido de la multitud.
+
+Se escucha un tranvía.
 
 
 ==================================================
-00:25 - 00:28
-CAMBIO DE ESCENA
+FASE 7 — LLEGADA
+00:26 - 00:30
 ==================================================
+
+ACCIÓN:
 
 FLASH BLANCO.
 
-Carga de la escena:
+Se muestra Bogotá en 1948.
 
-Bogotá_1948
+El protagonista aparece en la nueva ubicación.
 
+La cámara recupera progresivamente el control normal.
 
-==================================================
-00:28+
-DESPUÉS DE LA CINEMÁTICA
-==================================================
-
-El protagonista aparece en Bogotá de 1948.
-
-La cámara vuelve progresivamente al control del jugador.
-
-El jugador puede comenzar a explorar.
 
 DIÁLOGO:
 
@@ -149,13 +185,57 @@ PROTAGONISTA:
 
 "Esto..."
 
-"No es 2026."
 
 Pausa.
+
+
+"Esto no es 2026."
+
+
+El protagonista observa a su alrededor.
+
 
 "¿Dónde estoy?"
 
 
 ==================================================
-FIN
+FINAL
+==================================================
+
+Se escucha a un ciudadano a lo lejos:
+
+CIUDADANO:
+
+"¡Mataron a Gaitán!"
+
+
+El protagonista reacciona.
+
+
+PROTAGONISTA:
+
+"Gaitán..."
+
+
+El jugador observa un periódico.
+
+
+La fecha es:
+
+9 DE ABRIL DE 1948
+
+
+PROTAGONISTA:
+
+"No puede ser."
+
+
+Pausa.
+
+
+"Estoy en el Bogotazo."
+
+
+==================================================
+FIN DE CINEMÁTICA
 ==================================================
