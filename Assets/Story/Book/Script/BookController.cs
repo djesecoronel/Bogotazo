@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class BookController : MonoBehaviour
 {
@@ -12,9 +13,13 @@ public class BookController : MonoBehaviour
     [Header("Botones")]
     public Button previousButton;
     public Button nextButton;
+    public Button closeButton;
 
     [Header("Contenido del libro")]
     public TextAsset bookText;
+
+    [Header("Eventos")]
+    public UnityEvent OnBookClosed; // Evento para avisar que el libro se cerró
 
     private string[] pages;
     private int currentPage = 0;
@@ -22,6 +27,12 @@ public class BookController : MonoBehaviour
     private void Start()
     {
         LoadPages();
+        
+        // Asignar listeners por código a los botones para evitar fallos
+        if (previousButton != null) previousButton.onClick.AddListener(PreviousPage);
+        if (nextButton != null) nextButton.onClick.AddListener(NextPage);
+        if (closeButton != null) closeButton.onClick.AddListener(CloseBook);
+
         CloseBook();
     }
 
@@ -47,21 +58,19 @@ public class BookController : MonoBehaviour
     public void OpenBook()
     {
         currentPage = 0;
-
-        bookPanel.SetActive(true);
-
+        if (bookPanel != null) bookPanel.SetActive(true);
         ShowPage();
     }
 
     public void CloseBook()
     {
-        bookPanel.SetActive(false);
+        if (bookPanel != null) bookPanel.SetActive(false);
+        OnBookClosed?.Invoke(); // Dispara el evento al cerrar
     }
 
     public void NextPage()
     {
-        if (pages == null)
-            return;
+        if (pages == null) return;
 
         if (currentPage < pages.Length - 1)
         {
@@ -72,8 +81,7 @@ public class BookController : MonoBehaviour
 
     public void PreviousPage()
     {
-        if (pages == null)
-            return;
+        if (pages == null) return;
 
         if (currentPage > 0)
         {
@@ -94,8 +102,7 @@ public class BookController : MonoBehaviour
 
         if (pageNumberText != null)
         {
-            pageNumberText.text =
-                "Página " + (currentPage + 1) + " de " + pages.Length;
+            pageNumberText.text = "Página " + (currentPage + 1) + " de " + pages.Length;
         }
 
         if (previousButton != null)
