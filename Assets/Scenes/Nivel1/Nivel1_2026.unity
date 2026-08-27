@@ -2744,7 +2744,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.995933, z: -0, w: -0.090097316}
   m_LocalPosition: {x: 1.0343325, y: 1.3470001, z: -0.9475657}
-  m_LocalScale: {x: 0.009171326, y: 7.6545e+10, z: 0.01}
+  m_LocalScale: {x: 0.02, y: 5, z: 0.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1675924621}
@@ -2825,7 +2825,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.000002, y: 1, z: 10.000004}
+  m_Size: {x: 1, y: 0.1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &953255262
 MonoBehaviour:
@@ -3460,7 +3460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec42ce23b9e16f45b92f48d30831a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
-  distanciaInteraccion: 7
+  distanciaInteraccion: 2
   teclaInteraccion: 101
   textoInteraccion: {fileID: 486421187}
 --- !u!1001 &1251269598
