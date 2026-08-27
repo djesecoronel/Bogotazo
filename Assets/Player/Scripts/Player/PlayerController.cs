@@ -81,4 +81,23 @@ public class PlayerController : MonoBehaviour
         velocity = Vector3.zero;
         controller.enabled = true;
     }
+
+    public void HitPlayer(Vector3 forceDirection, float stunTime)
+    {
+        // Aplica directamente el impulso vertical o de fuerza recibido
+        velocity.y = forceDirection.y; 
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        // Si el objeto con el que choca tiene Rigidbody y no es kinematic puro, podemos aplicar fuerza o reaccionar
+        if (body != null && !body.isKinematic)
+        {
+            // Opcional: empujar objetos dinámicos
+            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+            body.linearVelocity = pushDir * 3.0f;
+        }
+    }
 }
