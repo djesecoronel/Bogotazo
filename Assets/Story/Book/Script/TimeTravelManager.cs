@@ -25,6 +25,12 @@ public class TimeTravelManager : MonoBehaviour
         if (isTraveling) return;
         isTraveling = true;
 
+        PlayerInteractor interactor = FindAnyObjectByType<PlayerInteractor>();
+        if (interactor != null)
+        {
+            interactor.SetBloqueado(true);
+        }
+
         StartCoroutine(SequenceWithFlashbang());
     }
 
