@@ -3,16 +3,24 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movimiento")]
+    [Header("Movimiento Base")]
     public float walkSpeed = 5.0f;
-    public float runSpeed = 8.0f;
+    public float runSpeed = 100.0f;
     public float jumpHeight = 1.5f;
+
+    [Header("Modo Vuelo")]
+    public float flySpeed = 40.0f;
+    public float flyVerticalSpeed = 30.0f;
+    private bool isFlying = false;
 
     [Header("Física y Gravedad")]
     public float gravity = -19.62f;
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+
+    [Header("Animaciones")]
+    public Animator anim;
 
     [Header("Seguridad (Caída al vacío)")]
     public float limiteCaidaY = -15.0f;
@@ -25,11 +33,43 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        // Asignación automática del Animator en el objeto o sus hijos
+        if (anim == null)
+        {
+            anim = GetComponentInChildren<Animator>();
+        }
     }
 
     void Update()
     {
-        // 1. Detección de suelo
+        // 1. Alternar modo Vuelo con la tecla T
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            isFlying = !isFlying;
+            velocity = Vector3.zero; // Reiniciar inercia al cambiar de modo
+        }
+
+        // 2. Lógica según el modo activo
+        if (isFlying)
+        {
+            ManejarVuelo();
+        }
+        else
+        {
+            ManejarMovimientoTerrestre();
+        }
+
+        // 3. Sistema de seguridad por si cae fuera del mapa
+        if (transform.position.y < limiteCaidaY)
+        {
+            Reaparecer();
+        }
+    }
+
+    void ManejarMovimientoTerrestre()
+    {
+        // Detección de suelo
         if (groundCheck != null)
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -39,65 +79,102 @@ public class PlayerController : MonoBehaviour
             isGrounded = controller.isGrounded;
         }
 
-        // Reiniciar velocidad de gravedad cuando toca el piso
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f; 
         }
 
-        // 2. Entradas de movimiento (WASD / Flechas)
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        // Entradas de movimiento (WASD)
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
-        // Determinar si está corriendo (Shift Izquierdo)
-        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        // Evaluaciones de estado
+        bool isMoving = (x != 0 || z != 0);
+        bool isRunning = isMoving && Input.GetKey(KeyCode.LeftShift);
 
-        // Calcular dirección basada en la orientación LOCAL del personaje
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        // Desplazamiento local únicamente si hay entradas
+        if (isMoving)
+        {
+            float currentSpeed = isRunning ? runSpeed : walkSpeed;
+            Vector3 move = (transform.right * x + transform.forward * z).normalized;
+            controller.Move(move * currentSpeed * Time.deltaTime);
+        }
 
-        // 3. Salto
+        // Salto (Espacio)
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            if (anim != null)
+            {
+                anim.SetTrigger("doJump");
+            }
         }
 
-        // 4. Aplicar gravedad
+        // Enviar parámetros al Animator (incluye isJumping)
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", isMoving);
+            anim.SetBool("isRunning", isRunning);
+            anim.SetBool("isJumping", !isGrounded); // true si está en el aire, false al tocar suelo
+        }
+
+        // Aplicar gravedad constante y acumulación de física
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
 
-        // 5. Sistema de seguridad si cae fuera del mapa
-        if (transform.position.y < limiteCaidaY)
+    void ManejarVuelo()
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
+        Vector3 move = (transform.right * x + transform.forward * z).normalized;
+
+        // Elevación y descenso con clics del ratón
+        float y = 0f;
+        if (Input.GetMouseButton(1)) // Clic Derecho (Subir)
         {
-            Reaparecer();
+            y = 1f;
         }
+        else if (Input.GetMouseButton(0)) // Clic Izquierdo (Bajar)
+        {
+            y = -1f;
+        }
+
+        Vector3 flyDirection = move * flySpeed + transform.up * (y * flyVerticalSpeed);
+        controller.Move(flyDirection * Time.deltaTime);
+
+        // Apagar animaciones terrestres en el aire
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isRunning", false);
+            anim.SetBool("isJumping", false);
+        }
+    }
+
+    // Compatibilidad con ObstacleCoursePack (Bounce.cs)
+    public void HitPlayer(Vector3 velocityForce)
+    {
+        velocity = velocityForce;
+    }
+
+    public void HitPlayer(Vector3 velocityForce, float delay)
+    {
+        velocity = velocityForce;
+    }
+
+    public void HitPlayer(Vector3 velocityForce, Vector3 extraForce)
+    {
+        velocity = velocityForce + extraForce;
     }
 
     void Reaparecer()
     {
-        // Desactivar temporalmente el controller para permitir la teleportación directa
         controller.enabled = false;
         transform.position = posicionReaparicion;
         velocity = Vector3.zero;
+        isFlying = false;
         controller.enabled = true;
-    }
-
-    public void HitPlayer(Vector3 forceDirection, float stunTime)
-    {
-        // Aplica directamente el impulso vertical o de fuerza recibido
-        velocity.y = forceDirection.y; 
-    }
-
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Rigidbody body = hit.collider.attachedRigidbody;
-
-        // Si el objeto con el que choca tiene Rigidbody y no es kinematic puro, podemos aplicar fuerza o reaccionar
-        if (body != null && !body.isKinematic)
-        {
-            // Opcional: empujar objetos dinámicos
-            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-            body.linearVelocity = pushDir * 3.0f;
-        }
     }
 }

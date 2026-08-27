@@ -258,7 +258,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.8
   m_Radius: 0.3
-  m_SlopeLimit: 45
+  m_SlopeLimit: 180
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
@@ -276,14 +276,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   walkSpeed: 5
-  runSpeed: 8
+  runSpeed: 6090
   jumpHeight: 1.5
+  flySpeed: 180
+  flyVerticalSpeed: 140
   gravity: -19.62
   groundCheck: {fileID: 0}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 0
+  anim: {fileID: 492791414789704776}
   limiteCaidaY: -15
   posicionReaparicion: {x: 0, y: 1, z: 0}
 --- !u!95 &7153435870262589193
@@ -392,11 +395,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ch23_nonPBR@Strut Walking
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 258f2013e6c1c7440ba8ec4636b18425, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: efacc709368d8074084b6551d7970827, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 258f2013e6c1c7440ba8ec4636b18425, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 258f2013e6c1c7440ba8ec4636b18425, type: 3}
+--- !u!95 &492791414789704776 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 258f2013e6c1c7440ba8ec4636b18425, type: 3}
+  m_PrefabInstance: {fileID: 6321974739202453977}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5779969877210748466 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 258f2013e6c1c7440ba8ec4636b18425, type: 3}
