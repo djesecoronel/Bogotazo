@@ -9,6 +9,7 @@ public class BookController : MonoBehaviour
     public GameObject bookPanel;
     public TMP_Text pageText;
     public TMP_Text pageNumberText;
+    public Image pageImage;
 
     [Header("Botones")]
     public Button previousButton;
@@ -17,23 +18,29 @@ public class BookController : MonoBehaviour
 
     [Header("Contenido del libro")]
     public TextAsset bookText;
+    public Sprite[] pageImages;
 
     [Header("Eventos")]
-    public UnityEvent OnBookClosed; // Evento para avisar que el libro se cerró
+    public UnityEvent OnBookClosed;
 
     private string[] pages;
     private int currentPage = 0;
 
-    private void Start()
+    private void Awake()
     {
         LoadPages();
-        
-        // Asignar listeners por código a los botones para evitar fallos
+
+        // Asignar listeners a los botones por código
         if (previousButton != null) previousButton.onClick.AddListener(PreviousPage);
         if (nextButton != null) nextButton.onClick.AddListener(NextPage);
         if (closeButton != null) closeButton.onClick.AddListener(CloseBook);
+    }
 
-        CloseBook();
+    private void OnEnable()
+    {
+        // Se ejecuta automáticamente cada vez que el libro se activa en pantalla
+        currentPage = 0;
+        ShowPage();
     }
 
     private void LoadPages()
@@ -57,15 +64,15 @@ public class BookController : MonoBehaviour
 
     public void OpenBook()
     {
-        currentPage = 0;
         if (bookPanel != null) bookPanel.SetActive(true);
+        currentPage = 0;
         ShowPage();
     }
 
     public void CloseBook()
     {
         if (bookPanel != null) bookPanel.SetActive(false);
-        OnBookClosed?.Invoke(); // Dispara el evento al cerrar
+        OnBookClosed?.Invoke();
     }
 
     public void NextPage()
@@ -94,17 +101,35 @@ public class BookController : MonoBehaviour
     {
         if (pages == null || pages.Length == 0)
         {
-            pageText.text = "El libro no contiene páginas.";
+            if (pageText != null) pageText.text = "El libro no contiene páginas.";
             return;
         }
 
-        pageText.text = pages[currentPage];
+        // 1. Cargar Texto
+        if (pageText != null) pageText.text = pages[currentPage];
 
+        // 2. Cargar Imagen de la página izquierda
+        if (pageImage != null)
+        {
+            if (pageImages != null && currentPage < pageImages.Length && pageImages[currentPage] != null)
+            {
+                pageImage.gameObject.SetActive(true);
+                pageImage.sprite = pageImages[currentPage];
+            }
+            else
+            {
+                pageImage.gameObject.SetActive(false);
+            }
+        }
+
+        // 3. Cargar Número de Página
         if (pageNumberText != null)
         {
+            pageNumberText.gameObject.SetActive(true);
             pageNumberText.text = "Página " + (currentPage + 1) + " de " + pages.Length;
         }
 
+        // 4. Estado de Botones
         if (previousButton != null)
         {
             previousButton.interactable = currentPage > 0;
@@ -112,7 +137,13 @@ public class BookController : MonoBehaviour
 
         if (nextButton != null)
         {
+            nextButton.gameObject.SetActive(currentPage < pages.Length - 1);
             nextButton.interactable = currentPage < pages.Length - 1;
+        }
+
+        if (closeButton != null)
+        {
+            closeButton.gameObject.SetActive(currentPage == pages.Length - 1);
         }
     }
 }
