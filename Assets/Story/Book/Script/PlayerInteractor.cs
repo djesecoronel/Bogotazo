@@ -7,11 +7,11 @@ public class PlayerInteractor : MonoBehaviour
     public float distanciaInteraccion = 7.0f;
     public KeyCode teclaInteraccion = KeyCode.E;
 
-    [Header("UI de Mensaje")]
+    [Header("UI y Referencias")]
     public TextMeshProUGUI textoInteraccion;
 
-    // Control de estado para no mostrar texto en cinemáticas o menús
     private bool estaBloqueado = false;
+    private Transform interactableActual;
 
     void Start()
     {
@@ -20,7 +20,24 @@ public class PlayerInteractor : MonoBehaviour
 
     void Update()
     {
-        // Si la interacción está bloqueada (leyendo libro o viajando), no procesamos nada
+        // 1. Si hay un diálogo activo, verificamos la distancia o detenemos la interacción
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
+        {
+            OcultarTexto();
+
+            // Si te alejas del objeto con el que hablas, cierra el diálogo
+            if (interactableActual != null)
+            {
+                float dist = Vector3.Distance(transform.position, interactableActual.position);
+                if (dist > distanciaInteraccion)
+                {
+                    DialogueManager.Instance.EndDialogue();
+                    interactableActual = null;
+                }
+            }
+            return;
+        }
+
         if (estaBloqueado)
         {
             OcultarTexto();
@@ -36,6 +53,7 @@ public class PlayerInteractor : MonoBehaviour
 
             if (interactable != null)
             {
+                interactableActual = hit.collider.transform;
                 MostrarTexto("Presiona E para interactuar");
 
                 if (Input.GetKeyDown(teclaInteraccion) || Input.GetMouseButtonDown(0))
@@ -47,6 +65,7 @@ public class PlayerInteractor : MonoBehaviour
             }
         }
 
+        interactableActual = null;
         OcultarTexto();
     }
 
@@ -72,7 +91,6 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    // Permite bloquear/desbloquear la interacción desde otros scripts (Libro, Cinemáticas, etc.)
     public void SetBloqueado(bool estado)
     {
         estaBloqueado = estado;
